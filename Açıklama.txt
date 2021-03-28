@@ -1,0 +1,138 @@
+﻿---------------------------------------------------------------------------------------------------------------------------------------------------------
+Tipler araşı dönüşüm yapılırken; 
+	
+	type sayi = static_cast<type>(deger);
+	
+kullanilir. Burada parantez içerisinde yazilan deger ifadesi <type> içerisine yazilacak olan değişken tipine çevirilir. 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Methotlara obje yollanacaksa kesinlikle referans olarak yollanmalı çünkü direkt obje yollanırsa fonksiyon gereksiz yere
+yolladıgımız objenin kopyasını alacak ve onun üzerinde işlem yapacak. Kopya alması bize vakit kaybetttir ve ram 
+gereksiz yere işgal edilir o sebeple biz fonksiyonlarımıza obje yollarken referanslarını yani adreslerini yollamaya
+gayret ederiz.
+
+void foo(const class &obje){} 
+
+--> İşte burada olduğu objelerimiz referansı ile beraber yollandı ayrıca başına const aldı. Burada const alması demek,
+biz bu obje üzerinde değişiklik yapamayız demektir. Objeyi koruma altına almış olur. Yalnızca okunabilir. Const referanslar
+const olmayan methotları çağıramaz çünkü eğer const olmayan bir methotu çağırabiliyor olsaydı, çağırılan methot üzerinde
+const methot içerisinde ki değitirilemez nesneyi değiştirebilirdi bu sebeple c++ yöneticileri bunun önüne geçebilmek için
+böyle bir kural koymuşlardır.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------Statik Değişkenler--------------------------------------------------
+
+..Statik değişkenler fonksiyon bittikten sonra bellekten kaldırılmaz, program sonlandıktan sonra bellekten kaldırılır. 
+
+-->Aşağıda ki ilk fonksiyon da 'i' değişkenimiz int tipte tanımlanmıştır. Burada fonksiyon bittikten sonra fonksiyonda 
+oluşturulan tüm veriler bellekten kaldırılır. 
+
+#include <iostream>
+using namespace std;
+
+void getFoo(){
+
+	int i=3;
+	i++;
+	cout << "i of value: " << i << endl;
+}
+
+
+int main()
+{
+	getFoo();
+	// i ye fonksiyon bittikten sonra ulaşamayız bunun sebebi fonksiyon bittikten sonra bellekten
+	// degişkenin kaldırılmış olmasıdır.
+}
+
+
+Çıktı: 
+	i of value: 4
+
+
+-->Aşağıda ki ilk fonksiyon da 'i' değişkenimiz static int tipte tanımlanmıştır. Burada fonksiyon bittikten sonra
+fonksiyonda oluşturulan static veriler ram de muhafaza edilir ta ki program sonlanınca ve kapatılıncaya dek.
+
+#include <iostream>
+using namespace std;
+
+void getFoo(){
+
+	static int i=3;
+	i++;
+	cout << "i of value: " << i << endl;
+}
+
+int main()
+{
+	getFoo();
+	i+=3;
+	cout << "i of new value: " << i ; 
+}
+
+Çıktı: 
+	i of value: 4
+	i of new value: 7
+
+--------------------------------------------------Statik Classlar--------------------------------------------------
+
+.. Classlar içerisinde ki statik değişkenler nesnelere değil classlara özgüdür.
+.. Diger her bir obje veya nesne üzerinden bu değişkenlere ulaşabilir hepsinin ortak malıdır.
+
+#include <iostrem> 
+using namespace std; 
+
+class myStatik()
+{
+public:
+  static int myValue;
+  myStatik()
+{
+  myValue++;
+  cout << "Yeni deger: " << myValue << endl; 
+				
+}
+
+};
+
+int myStatik::myValue = 0;
+
+void main()
+{
+  myStatik myObje1;
+  myStatik myObje2;
+  myStatik myObje3;
+  myStatik myObje4;
+
+  cout << "Son deger: " << myValue << endl; 
+  system("pause");
+}
+
+.. Classlar içerisinde ki static functions da nesnelere değil classlara özgüdür.
+.. Nesne olusturmadan da sınıflar içerisinde ki static functionlara erisim sağlayabiliriz.
+
+#include <iostrem> 
+using namespace std; 
+
+class myStaticFunction
+{
+public: 
+
+  static void kareAlan(int x)
+  {
+    cout << "Tek kenarı girilen karenin alanı: "  << x*x << endl;  
+  } 
+  static void kareCevre(int x)
+  {
+    cout << "Tek kenarı girilen karenin cevresi: "  << 4*x << endl;  
+  } 
+
+};
+void main() 
+{
+
+  myStaticFunction::kareAlan(5);
+  myStaticFunction::kareCevre(20);
+
+  system("pause");
+
+}
+ 
